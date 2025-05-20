@@ -2021,3 +2021,5 @@ while ($true) {
     }
     Sleep 3
 }
+
+pause
